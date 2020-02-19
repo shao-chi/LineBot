@@ -11,15 +11,12 @@ from linebot.models import (
 )
 
 from linebot_function import en_dictionary
+import config
 
 app = Flask(__name__)
 
-line_bot_api = \
-    LineBotApi('yizrFotfzhHrVUSlSC98/TBnMfiJRzXyZ43XWNYGgG+2JrXq8EZ+RsUoSc2Egpik \
-        /soa9dcfd5WgsiwuhQrGGzYqG5U1Mh8jarNP6/kCk93/NHBl2X2lkj3xx2ODKQ62r+TfiMU6 \
-        xG2BqKdPWRUPOwdB04t89/1O/w1cDnyilFU=')
-handler = \
-    WebhookHandler('65050cc53fbb7ded70a1213824ae8894')
+line_bot_api = LineBotApi(config.CHANNEL_ACCESS_TOKEN)
+handler = WebhookHandler(config.CHANNEL_SECRET)
 
 
 @app.route("/callback", methods=['POST'])
@@ -45,15 +42,23 @@ def handle_message(event):
     word = event.message.text
     result = en_dictionary(word)
 
+    # line_bot_api.reply_message(
+    #         event.reply_token, TextSendMessage(text=text))
+
     for res in result:
         text = word + ' ({})'.format(res['part_of_speech'])
-        line_bot_api.reply_message(
-            event.reply_token, [ \
-                TextSendMessage(text=text), \
-                TextSendMessage(text='UK pronounciation'), \
-                AudioSendMessage(original_content_url=res['uk_kk']), \
-                TextSendMessage(text='US pronounciation'), \
-                AudioSendMessage(original_content_url=res['us_kk'])])
+        line_bot_api.push_message(
+            config.USER_ID, TextSendMessage(text=text))
+        line_bot_api.push_message(
+            config.USER_ID, TextSendMessage(text='UK pronounciation'))
+        line_bot_api.push_message(
+            config.USER_ID, TextSendMessage(text='UK pronounciation'))
+        line_bot_api.push_message(
+            config.USER_ID, AudioSendMessage(original_content_url=res['uk_kk']))
+        line_bot_api.push_message(
+            config.USER_ID, TextSendMessage(text='US pronounciation'))
+        line_bot_api.push_message(
+            config.USER_ID, AudioSendMessage(original_content_url=res['us_kk']))
 
 import os
 if __name__ == "__main__":
