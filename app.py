@@ -54,11 +54,13 @@ def handle_message(event):
         line_bot_api.push_message(
             config.USER_ID, TextSendMessage(text='UK pronounciation'))
         line_bot_api.push_message(
-            config.USER_ID, AudioSendMessage(original_content_url=res['uk_kk']))
+            config.USER_ID, \
+            AudioSendMessage(original_content_url=res['uk_kk']), duration=240000)
         line_bot_api.push_message(
             config.USER_ID, TextSendMessage(text='US pronounciation'))
         line_bot_api.push_message(
-            config.USER_ID, AudioSendMessage(original_content_url=res['us_kk']))
+            config.USER_ID, \
+            AudioSendMessage(original_content_url=res['us_kk']), duration=240000)
 
 import os
 if __name__ == "__main__":
