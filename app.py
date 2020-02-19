@@ -48,15 +48,12 @@ def handle_message(event):
     for res in result:
         text = word + ' ({})'.format(res['part_of_speech'])
         line_bot_api.reply_message(
-            event.reply_token, TextSendMessage(text=text))
-        line_bot_api.reply_message(
-            event.reply_token, TextSendMessage(text='UK pronounciation'))
-        line_bot_api.reply_message(
-            event.reply_token, AudioSendMessage(original_content_url=res['uk_kk']))
-        line_bot_api.reply_message(
-            event.reply_token, TextSendMessage(text='US pronounciation'))
-        line_bot_api.reply_message(
-            event.reply_token, AudioSendMessage(original_content_url=res['us_kk']))
+            event.reply_token, [ \
+                TextSendMessage(text=text), \
+                TextSendMessage(text='UK pronounciation'), \
+                AudioSendMessage(original_content_url=res['uk_kk']), \
+                TextSendMessage(text='US pronounciation'), \
+                AudioSendMessage(original_content_url=res['us_kk'])])
 
 import os
 if __name__ == "__main__":
