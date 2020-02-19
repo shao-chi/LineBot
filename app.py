@@ -54,11 +54,11 @@ def handle_message(event):
         AudioSendMessage(original_content_url=result[0]['us_audio'], duration=200))
 
     for res in result:
-        message = dict_carousel(res['description'], res['part_of_speech'])
+        message = dict_carousel(word, res['description'], res['part_of_speech'])
         line_bot_api.push_message(config.USER_ID, message)
 
 
-def dict_carousel(description_result, part_of_speech):
+def dict_carousel(word, description_result, part_of_speech):
     cols = []
     for result in description_result:
         text = '(' + part_of_speech + ')\n'
@@ -81,7 +81,12 @@ def dict_carousel(description_result, part_of_speech):
             columns=[
                 CarouselColumn(
                     title=col['title'],
-                    text=col['text']
+                    text=col['text'],
+                    actions=[
+                        MessageAction(
+                            label = '👆🏻👆🏻👆🏻👆🏻👆🏻',
+                            text = word + '\n' + col['text']
+                    ]
                 ) for col in cols]))
     return carousel_template_message
 
