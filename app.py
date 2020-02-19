@@ -7,7 +7,7 @@ from linebot.exceptions import (
     InvalidSignatureError
 )
 from linebot.models import (
-    MessageEvent, TextMessage, TextSendMessage, AudioSendMessage, 
+    MessageEvent, TextMessage, TextSendMessage, AudioSendMessage, TemplateSendMessage
 )
 
 from linebot_function import en_dictionary
@@ -41,24 +41,48 @@ def callback():
 def handle_message(event):
     word = event.message.text
     result = en_dictionary(word)
+    text = word + '\nAudio: UK / US'
 
-    # line_bot_api.reply_message(
-    #         event.reply_token, TextSendMessage(text=text))
+    line_bot_api.push_message(
+        config.USER_ID, TextSendMessage(text=text))
+    line_bot_api.push_message(
+        config.USER_ID, \
+        AudioSendMessage(original_content_url=result[0]['uk_audio'], duration=200))
+    line_bot_api.push_message(
+        config.USER_ID, \
+        AudioSendMessage(original_content_url=result[0]['us_audio'], duration=200))
 
     for res in result:
-        text = word + ' ({})'.format(res['part_of_speech'])
-        line_bot_api.push_message(
-            config.USER_ID, TextSendMessage(text=text))
-        line_bot_api.push_message(
-            config.USER_ID, TextSendMessage(text='UK'))
-        line_bot_api.push_message(
-            config.USER_ID, \
-            AudioSendMessage(original_content_url=res['uk_audio'], duration=200))
-        line_bot_api.push_message(
-            config.USER_ID, TextSendMessage(text='US'))
-        line_bot_api.push_message(
-            config.USER_ID, \
-            AudioSendMessage(original_content_url=res['us_audio'], duration=200))
+        message = dict_carousel(res['description'], res['part_of_speech'])
+        line_bot_api.push_message(config.USER_ID, message)
+
+
+def dict_carousel(description_result, part_of_speech):
+    cols = []
+    for result in description_result:
+        text = '(' + part_of_speech + ')\n'
+        for i in range(len(result)):
+            text += str(i+1) + '. ' + result[i]['def_en'] + '\n'
+            text += result[i]['def_tw'] + '\n'
+            for j in range(len(result[i]['sentences'])):
+                text += str(i+1) + '. ' + result[i]['sentences'][j]
+
+        temp = {
+            'title': result['guide_word'],
+            'text': text
+        }
+        cols.append(temp)
+    carousel_template_message = TemplateSendMessage(
+        alt_text='dictionary carousel',
+        template=CarouselTemplate(
+            columns=[
+                CarouselColumn(
+                    thumbnail_image_url=None,
+                    title=col['title'],
+                    text=col['text']
+                ) for col in cols
+            ]
+    return carousel_template_message
 
 import os
 if __name__ == "__main__":
