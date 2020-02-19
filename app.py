@@ -73,12 +73,14 @@ def dict_carousel(word, description_result, part_of_speech):
         for i in range(len(result['def'])):
             text += '{}. {}\n'.format(i+1, result['def'][i]['def_tw']) #, result['def'][i]['def_tw'])
 
-            # for j in range(len(result['def'][i]['sentences'])):
-            #     text += result['def'][i]['sentences'][j]
+            sentence = str()
+            for j in range(len(result['def'][i]['sentences'])):
+                sentence += result['def'][i]['sentences'][j]
 
         temp = {
             'title': result['guide_word'],
-            'text': text
+            'text': text,
+            'sentence': sentence
         }
         cols.append(temp)
         n += 1
@@ -93,8 +95,8 @@ def dict_carousel(word, description_result, part_of_speech):
                     text=col['text'],
                     actions=[
                         MessageAction(
-                            label='👆🏻👆🏻👆🏻👆🏻👆🏻',
-                            text=word + '\n' + col['text'])
+                            label='👆🏻例句',
+                            text=col['sentence'])
                     ]) for col in cols]))
     return carousel_template_message
 
