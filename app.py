@@ -50,14 +50,13 @@ def handle_message(event):
         line_bot_api.push_message(
             config.USER_ID, TextSendMessage(text=text))
         line_bot_api.push_message(
-            config.USER_ID, TextSendMessage(text='UK pronounciation'))
-        line_bot_api.push_message(
-            config.USER_ID, TextSendMessage(text='UK pronounciation'))
+            config.USER_ID, TextSendMessage(text='UK'))
+        print(res['uk_audio'])
         line_bot_api.push_message(
             config.USER_ID, \
             AudioSendMessage(original_content_url=res['uk_audio'], duration=200))
         line_bot_api.push_message(
-            config.USER_ID, TextSendMessage(text='US pronounciation'))
+            config.USER_ID, TextSendMessage(text='US'))
         line_bot_api.push_message(
             config.USER_ID, \
             AudioSendMessage(original_content_url=res['us_audio'], duration=200))
