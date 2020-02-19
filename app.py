@@ -81,8 +81,7 @@ def dict_carousel(description_result, part_of_speech):
                     thumbnail_image_url=None,
                     title=col['title'],
                     text=col['text']
-                ) for col in cols
-            ]
+                ) for col in cols]))
     return carousel_template_message
 
 import os
