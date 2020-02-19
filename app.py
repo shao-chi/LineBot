@@ -64,19 +64,24 @@ def handle_message(event):
 
 def dict_carousel(word, description_result, part_of_speech):
     cols = []
+    n = 0
     for result in description_result:
+        if n >= 10:
+            break
+
         text = '(' + part_of_speech + ')\n'
         for i in range(len(result['def'])):
             text += '{}. {}\n{}\n'.format(i+1, result['def'][i]['def_en'], result['def'][i]['def_tw'])
 
-            for j in range(len(result['def'][i]['sentences'])):
-                text += result['def'][i]['sentences'][j]
+            # for j in range(len(result['def'][i]['sentences'])):
+            #     text += result['def'][i]['sentences'][j]
 
         temp = {
             'title': result['guide_word'],
             'text': text
         }
         cols.append(temp)
+        n += 1
 
     print(cols)
     carousel_template_message = TemplateSendMessage(
