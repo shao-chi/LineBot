@@ -74,6 +74,7 @@ def dict_carousel(description_result, part_of_speech):
         }
         cols.append(temp)
 
+    print(cols)
     carousel_template_message = TemplateSendMessage(
         alt_text='dictionary carousel',
         template=CarouselTemplate(
