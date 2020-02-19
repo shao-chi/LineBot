@@ -71,7 +71,7 @@ def dict_carousel(word, description_result, part_of_speech):
 
         text = '(' + part_of_speech + ')\n'
         for i in range(len(result['def'])):
-            text += '{}. {}\n'.format(i+1, result['def'][i]['def_en']) #, result['def'][i]['def_tw'])
+            text += '{}. {}\n'.format(i+1, result['def'][i]['def_tw']) #, result['def'][i]['def_tw'])
 
             # for j in range(len(result['def'][i]['sentences'])):
             #     text += result['def'][i]['sentences'][j]
