@@ -79,7 +79,6 @@ def dict_carousel(description_result, part_of_speech):
         template=CarouselTemplate(
             columns=[
                 CarouselColumn(
-                    thumbnail_image_url=None,
                     title=col['title'],
                     text=col['text']
                 ) for col in cols]))
