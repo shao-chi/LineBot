@@ -8,7 +8,7 @@ from linebot.exceptions import (
 )
 from linebot.models import (
     MessageEvent, TextMessage, TextSendMessage, AudioSendMessage, 
-    TemplateSendMessage, CarouselTemplate, CarouselColumn
+    TemplateSendMessage, CarouselTemplate, CarouselColumn, MessageAction
 )
 
 from linebot_function import en_dictionary
@@ -42,6 +42,7 @@ def callback():
 def handle_message(event):
     word = event.message.text
     result = en_dictionary(word)
+    print(result)
     text = word + '\nAudio: UK / US'
 
     line_bot_api.push_message(
@@ -54,8 +55,11 @@ def handle_message(event):
         AudioSendMessage(original_content_url=result[0]['us_audio'], duration=200))
 
     for res in result:
-        message = dict_carousel(word, res['description'], res['part_of_speech'])
-        line_bot_api.push_message(config.USER_ID, message)
+        try:
+            message = dict_carousel(word, res['description'], res['part_of_speech'])
+            line_bot_api.push_message(config.USER_ID, message)
+        except:
+            line_bot_api.push_message(config.USER_ID, TextSendMessage(text='ERROR'))
 
 
 def dict_carousel(word, description_result, part_of_speech):
@@ -84,8 +88,8 @@ def dict_carousel(word, description_result, part_of_speech):
                     text=col['text'],
                     actions=[
                         MessageAction(
-                            label = '👆🏻👆🏻👆🏻👆🏻👆🏻',
-                            text = word + '\n' + col['text'])
+                            label='👆🏻👆🏻👆🏻👆🏻👆🏻',
+                            text=word + '\n' + col['text'])
                     ]) for col in cols]))
     return carousel_template_message
 
