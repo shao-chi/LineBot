@@ -7,7 +7,7 @@ from linebot.exceptions import (
     InvalidSignatureError
 )
 from linebot.models import (
-    MessageEvent, TextMessage, TextSendMessage,
+    MessageEvent, TextMessage, TextSendMessage, AudioSendMessage, 
 )
 
 from linebot_function import en_dictionary
@@ -51,7 +51,6 @@ def handle_message(event):
             config.USER_ID, TextSendMessage(text=text))
         line_bot_api.push_message(
             config.USER_ID, TextSendMessage(text='UK'))
-        print(res['uk_audio'])
         line_bot_api.push_message(
             config.USER_ID, \
             AudioSendMessage(original_content_url=res['uk_audio'], duration=200))
