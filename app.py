@@ -86,7 +86,7 @@ def dict_carousel(word, description_result, part_of_speech):
                         MessageAction(
                             label = '👆🏻👆🏻👆🏻👆🏻👆🏻',
                             text = word + '\n' + col['text']
-                    ]
+                    ])
                 ) for col in cols]))
     return carousel_template_message
 
