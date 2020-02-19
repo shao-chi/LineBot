@@ -55,12 +55,12 @@ def handle_message(event):
             config.USER_ID, TextSendMessage(text='UK pronounciation'))
         line_bot_api.push_message(
             config.USER_ID, \
-            AudioSendMessage(original_content_url=res['uk_audio'], duration=240000))
+            AudioSendMessage(original_content_url=res['uk_audio'], duration=200))
         line_bot_api.push_message(
             config.USER_ID, TextSendMessage(text='US pronounciation'))
         line_bot_api.push_message(
             config.USER_ID, \
-            AudioSendMessage(original_content_url=res['us_audio'], duration=240000))
+            AudioSendMessage(original_content_url=res['us_audio'], duration=200))
 
 import os
 if __name__ == "__main__":
