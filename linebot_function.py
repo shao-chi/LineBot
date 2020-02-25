@@ -65,3 +65,22 @@ def en_dictionary(keyword):
         result.append(res)
 
     return result
+
+# def ko_dictionary(keyword):
+#     """
+#     """
+#     result = dict()
+
+#     url = "https://zh.dict.naver.com/#/search?query={}".format(keyword)
+#     req = requests.get(url)
+#     soup = BeautifulSoup(req.text,"html.parser")
+
+#     content = soup.find(name='div', class_='section section_keyword') \
+#         .find_all(name='div', class_='row')
+#     audio = content[0].find(name='button', class_='btn_listen play').get('purl')
+#     for word_def in content:
+#         mean_l = word_def.find_all(name='p', class_='mean')
+        
+#         mean_list = list()
+#         for mean in mean_l:
+#             mean_list.append(mean)
